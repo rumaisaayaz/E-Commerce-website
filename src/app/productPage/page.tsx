@@ -1,17 +1,12 @@
-import NewsletterInstagram from '@/components/newsletter-instagram'
-import { ProductGrid } from '@/components/product-grid'
-import React from 'react'
-import { Products } from '@/types/product'
+import { ProductCard } from "@/components/product-card";
 
 
 
-const ProductPage = () => {
+export default function productPage() {
   return (
     <div>
-        <ProductGrid products={Products} />
-        <NewsletterInstagram/>
+      <ProductCard />
     </div>
   )
 }
 
-export default ProductPage

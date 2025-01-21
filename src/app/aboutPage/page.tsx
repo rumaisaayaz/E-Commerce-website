@@ -2,14 +2,8 @@
 
 import Image from "next/image";
 
-import {
-  Clock,
-  Palette,
-  Shield,
-  Star,
-  LucideIcon,
-} from "lucide-react";
-import { ProductGrid } from "@/components/product-grid";
+import { Clock, Palette, Shield, Star, LucideIcon } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -27,17 +21,6 @@ function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
       <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
     </div>
   );
-}
-
-
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  isNew?: boolean;
-  category: string;
 }
 
 export default function AboutPage() {
@@ -68,57 +51,24 @@ export default function AboutPage() {
     },
   ];
 
-  const Products: Product[] = [
-    {
-      id: 1,
-      name: "Library Stool Chair",
-      price: 273,
-      image: "/product-10.png",
-      isNew: true,
-      category: "Classic",
-    },
-    {
-      id: 2,
-      name: "Library Stool Chair",
-      price: 253,
-      image: "/product-9.png",
-      isNew: true,
-      category: "Classic",
-    },
-    {
-      id: 3,
-      name: "Library Stool Chair",
-      price: 253,
-      image: "/product-8.png",
-      category: "Classic",
-    },
-    {
-      id: 4,
-      name: "Library Stool Chair",
-      price: 253,
-      image: "/product-5.png",
-      category: "Classic",
-    },
-  ];
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="grid md:grid-cols-2 m-10 gap-4">
-        <div className="bg-[#006D77] w-[672px] h-[478px] text-white p-8 md:p-10 flex flex-col justify-center">
-          <div className="w-[495px] h-[161px] gap-3 mb-20">
-            <h1 className="text-3xl md:text-3xl font-semibold mb-3">
-              About Us - Comforty
-            </h1>
-            <p className="text-lg font-normal opacity-90 mb-6 leading-relaxed">
-              At Comforty, we believe that the right chair can transform your
-              space. With our dedication to quality craftsmanship and timeless
-              aesthetics, we craft chairs that seamlessly blend style with
-              functionality.
-            </p>
+        <div className="bg-[#006D77] w-full md:w-[672px] h-auto md:h-[478px] text-white p-8 md:p-10 flex flex-col justify-center">
+          <div className="w-full md:w-[495px] h-auto md:h-[161px] gap-3 mb-6 md:mb-20">
+        <h1 className="text-2xl md:text-3xl font-semibold mb-3">
+          About Us - Comforty
+        </h1>
+        <p className="text-base md:text-lg font-normal opacity-90 mb-6 leading-relaxed">
+          At Comforty, we believe that the right chair can transform your
+          space. With our dedication to quality craftsmanship and timeless
+          aesthetics, we craft chairs that seamlessly blend style with
+          functionality.
+        </p>
           </div>
-          <button className="text-white  top-[368px] bg-[#007580] text-sm font-medium hover:bg-opacity-90 transition-colors w-[179px] h-[56px]">
-            View collection
+          <button className="text-white bg-[#007580] text-sm font-medium hover:bg-opacity-90 transition-colors w-full md:w-[179px] h-[56px]">
+        View collection
           </button>
         </div>
         <Image
@@ -126,7 +76,7 @@ export default function AboutPage() {
           alt="Featured Chair"
           width={619}
           height={478}
-          className="object-contain w-[619px] h-[478px] min-h-[300px] md:min-h-full"
+          className="object-contain w-full md:w-[619px] h-auto md:h-[478px] min-h-[300px] md:min-h-full"
         />
       </section>
 
@@ -152,7 +102,7 @@ export default function AboutPage() {
         <h2 className="text-xl md:text-2xl font-semibold text-center mb-10">
           Our Popular Products
         </h2>
-        <ProductGrid products={Products} />
+        <ProductCard />
       </section>
     </div>
   );

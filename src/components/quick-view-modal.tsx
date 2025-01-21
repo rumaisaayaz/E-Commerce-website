@@ -4,8 +4,25 @@ import { Dialog, Transition } from "@headlessui/react"
 import { Fragment } from "react"
 import Image from "next/image"
 import { X } from 'lucide-react'
-import { Product } from "@/types/product"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { urlFor } from "@/sanity/lib/image"
+
+interface Product {
+  _id: string; // Unique identifier for the product
+  title: string; // Product title
+  priceWithoutDiscount: number | null; // Original price, nullable
+  category: {
+    _id: string; // Category ID
+    title: string; // Category title
+  };
+  tags: string[]; // Array of tags
+  price: number; // Current price
+  badge: string | null; // Badge or label, nullable
+  imageUrl: string; // URL of the product image
+  description: string; // Product description
+  inventory: number; // Number of items in stock
+}
 
 interface QuickViewModalProps {
   product: Product | null
@@ -52,8 +69,8 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                 <div className="grid gap-8 md:grid-cols-2">
                   <div className="relative aspect-square">
                     <Image
-                      src={product.image}
-                      alt={product.name}
+                      src={urlFor(product.imageUrl).url()}
+                      alt={product.title}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
@@ -61,17 +78,21 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                   </div>
                   <div>
                     <Dialog.Title as="h3" className="text-2xl font-semibold">
-                      {product.name}
+                      {product.title}
                     </Dialog.Title>
                     <p className="mt-2 text-xl font-medium">${product.price}</p>
                     <p className="mt-4 text-gray-600">
-                      Category: {product.category}
+                      Category: {product.category.title}
                     </p>
                     <div className="mt-8 space-y-4">
-                      <Button className="w-full">Add to Cart</Button>
+                      <Link href={`/product/${product._id}`}  >
+                      <Button className="w-full mb-2">More Details</Button>
+                      </Link>
+                      <Link href="/productPage"  >
                       <Button variant="outline" className="w-full">
-                        Add to Wishlist
+                         Related Products
                       </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

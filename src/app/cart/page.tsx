@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Heart, Trash2, Minus, Plus } from 'lucide-react'
+import { Heart, Trash2, Minus, Plus} from 'lucide-react'
 import { Card } from "@/components/ui/card"
 
 interface CartItem {
@@ -45,11 +46,20 @@ export default function CartPage() {
   const cartItemCount = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0)
   }
+ 
 
   if (cartItems.length === 0) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center text-muted-foreground">
-        Your cart is empty
+      <div className="flex min-h-[400px] items-center justify-center bg-gray-100 p-8 rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Your cart is empty</h2>
+          <p className="text-gray-500 mb-6">Looks like you havent added anything to your cart yet.</p>
+          <Link href="/productPage">
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
+            Start Shopping
+          </button>
+          </Link>
+        </div>
       </div>
     )
   }
@@ -171,9 +181,11 @@ export default function CartPage() {
                   <span>${calculateTotal().toFixed(2)}</span>
                 </div>
               </div>
+              <Link href="/CheckoutPage">
               <Button className="w-full bg-teal-500 hover:bg-teal-600">
                 Member Checkout
               </Button>
+              </Link>
             </div>
           </Card>
         </div>

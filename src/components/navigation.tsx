@@ -44,17 +44,17 @@ export default function Navigation() {
               <SheetHeader>
                 <SheetTitle>Navigation</SheetTitle>
               </SheetHeader>
-              <SheetDescription>
+                <SheetDescription className="p-4">
                 {navigationLinks.map((link) => (
                   <Link
-                    key={link.href}
-                    href={link.href}
-                    className="flex flex-col m-4 bg-gray-400 rounded-sm justify-center items-center text-2xl text-black hover:text-gray-900 transition-colors"
+                  key={link.href}
+                  href={link.href}
+                  className="flex flex-col m-2 p-2 bg-gray-100 rounded-md shadow-md justify-center items-center text-lg text-gray-700 hover:bg-gray-200 transition-all"
                   >
-                    {link.label}
+                  {link.label}
                   </Link>
                 ))}
-              </SheetDescription>
+                </SheetDescription>
             </SheetContent>
           </Sheet>
         </div>

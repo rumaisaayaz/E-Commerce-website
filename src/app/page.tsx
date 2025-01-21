@@ -1,117 +1,65 @@
+"use client";
 import TopCategories from "@/components/categories";
 import Hero from "@/components/Hero";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FeaturedProducts } from "@/components/featured-products";
-
 import ProductShowcase from "@/components/product-showcase"
-import { Product } from "@/types/product"
-import { ProductGrid } from "@/components/product-grid";
+import { ProductCard } from "@/components/product-card";
+import { client } from "@/sanity/lib/client";
 
-const Products : Product[] = [
-  {
-    id: 1,
-    name: "Library Stool Chair",
-    price: 273,
-    image: "/product-1.png",
-    isNew: true,
-    category:"Classic",
-  },
-  {
-    id: 2,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-2.png",
-    isNew: true,
-    category:"Classic",
-  },
-  {
-    id: 3,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-3.png",
-    category:"Classic",
-  },
-  {
-    id: 4,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-4.png",
-    category:"Classic",
-  },
-  {
-    id: 5,
-    name: "Library Stool Chair",
-    price: 273,
-    image: "/image-1.png",
-    isNew: true,
-    category:"Classic",
-  },
-  {
-    id: 6,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-5.png",
-    isNew: true,
-    category:"Classic",
-  },
-  {
-    id: 7,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-7.png",
-    category:"Classic",
-  },
-  {
-    id: 8,
-    name: "Library Stool Chair",
-    price: 253,
-    image: "/product-1.png",
-    category:"Classic",
-  },
-]
-
-
-const showcaseproducts: Product[] = [
-  {
-    id: 1,
-    name: "Modern Orange Chair",
-    image: "/product-3.png",
-    price: 299,
-    category: "Modern",
-  },
-  {
-    id:2,
-    name: "Classic White Chair",
-    image: "/product-4.png",
-    price: 399,
-    category: "Classic",
-  },
-  {
-    id:3,
-    name: "Vintage Wood Chair",
-    image: "/product-1.png",
-    price: 249,
-    category: "Vintage",
-  },
-  {
-    id: 4,
-    name: "Grey Dining Chair",
-    image: "/product-5.png",
-    price: 349,
-    category: "Modern",
-  },
-  {
-    id: 5,
-    name: "Grey Dining Chair",
-    image: "/product-1.png",
-    price: 349,
-    category: "Modern",
-  }, 
-]
-
+interface Product {
+  _id: string; // Unique identifier for the product
+  title: string; // Product title
+  priceWithoutDiscount: number | null; // Original price, nullable
+  category: {
+    _id: string; // Category ID
+    title: string; // Category title
+  };
+  tags: string[]; // Array of tags
+  price: number; // Current price
+  badge: string | null; // Badge or label, nullable
+  imageUrl: string; // URL of the product image
+  description: string; // Product description
+  inventory: number; // Number of items in stock
+}
 
 const Home = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const query = await client.fetch(`
+              *[_type == "products"]{
+                _id,
+                title,
+                priceWithoutDiscount,
+                category->{
+                  _id,
+                  title
+                },
+                tags,
+                price,
+                badge,
+                "imageUrl": image.asset->url,
+                description,
+                inventory
+              }
+    
+    
+          `);
+          setProducts(query);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+  
+      fetchProducts();
+    }, []);
+  
+    const limit = 5;
+    // Limit the products displayed
+    const limitedProducts = products.slice(0, limit);
   const image = [
     { src: "/logo-0.png", alt: "company logos", width: 87, height: 87 },
     { src: "/logo-1.png", alt: "company logos", width: 107, height: 109 },
@@ -138,13 +86,13 @@ const Home = () => {
 
       <FeaturedProducts/>
       <TopCategories/>
-      <ProductShowcase products={showcaseproducts} />
+      <ProductShowcase products={limitedProducts} />
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"></section>
       <h2 className="mb-8 text-center text-2xl font-medium text-gray-900">
         Our Products
       </h2>
       <section/>
-      <ProductGrid products={Products} />
+      <ProductCard/>
     </div>
   );
 };
